@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strings"
 )
+
 // 正向代理服务器
 // 可以将web请求在发送到服务器之前，我们对其请求做一些改写
 func main() {
@@ -17,9 +18,9 @@ func main() {
 	}
 }
 
-type ForwardProxy struct {}
+type ForwardProxy struct{}
 
-func (*ForwardProxy) ServeHTTP(rw http.ResponseWriter, req *http.Request)  {
+func (*ForwardProxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	fmt.Printf("Received request %s %s %s\n", req.Method, req.Host, req.RemoteAddr)
 
 	// 1. 复制一个新的req，并设置一些 Header头
