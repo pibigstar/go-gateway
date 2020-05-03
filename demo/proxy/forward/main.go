@@ -25,7 +25,7 @@ func (*ForwardProxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 	// 1. 复制一个新的req，并设置一些 Header头
 	newReq := &http.Request{}
-	*newReq = *req
+	*newReq = *req // 浅拷贝
 	if clientIP, _, err := net.SplitHostPort(req.RemoteAddr); err == nil {
 		if prior, ok := newReq.Header["X-Forwarded-For"]; ok {
 			clientIP = strings.Join(prior, ", ") + ", " + clientIP
@@ -48,6 +48,6 @@ func (*ForwardProxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		}
 	}
 	rw.WriteHeader(res.StatusCode)
-	_, _ = io.Copy(rw, res.Body)
-	_ = res.Body.Close()
+	io.Copy(rw, res.Body)
+	res.Body.Close()
 }
