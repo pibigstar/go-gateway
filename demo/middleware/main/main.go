@@ -20,6 +20,7 @@ func main() {
 	sliceRouter.Group("/base").Use(
 		middleware.TraceLogSliceMW(), // trace 打印
 		middleware.RateLimiter(),     // 限流
+		middleware.CircuitMW(),       // 熔断
 
 		// 实际业务处理函数
 		func(c *middleware.RouterContext) {
@@ -31,6 +32,8 @@ func main() {
 		fmt.Println("reverseProxy")
 		reverseProxy(c).ServeHTTP(c.Rw, c.Req)
 	})
+	// 设置熔断器
+	middleware.SetHystrixConf(true)
 
 	// 创建路由控制器
 	routerHandler := middleware.NewRouterHandler(nil, sliceRouter)
