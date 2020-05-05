@@ -13,11 +13,11 @@ type RandomBalance struct {
 	addrs []string
 }
 
-func (r *RandomBalance) Add(addr ...string) error {
-	if len(addr) == 0 {
-		return errors.New("addr len 1 at least")
+func (r *RandomBalance) Add(params ...string) error {
+	if len(params) == 0 {
+		return errors.New("params len 1 at least")
 	}
-	r.addrs = append(r.addrs, addr...)
+	r.addrs = append(r.addrs, params...)
 	return nil
 }
 
@@ -29,6 +29,6 @@ func (r *RandomBalance) Next() string {
 	return r.addrs[r.curIndex]
 }
 
-func (r *RandomBalance) Get() (string, error) {
+func (r *RandomBalance) Get(key ...string) (string, error) {
 	return r.Next(), nil
 }

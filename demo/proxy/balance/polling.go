@@ -11,11 +11,11 @@ type PollingBalance struct {
 	addrs []string
 }
 
-func (p *PollingBalance) Add(addr ...string) error {
-	if len(addr) == 0 {
-		return errors.New("addr len 1 at least")
+func (p *PollingBalance) Add(params ...string) error {
+	if len(params) == 0 {
+		return errors.New("params len 1 at least")
 	}
-	p.addrs = append(p.addrs, addr...)
+	p.addrs = append(p.addrs, params...)
 	return nil
 }
 
@@ -33,6 +33,6 @@ func (p *PollingBalance) Next() string {
 	return curAddr
 }
 
-func (p *PollingBalance) Get() (string, error) {
+func (p *PollingBalance) Get(key ...string) (string, error) {
 	return p.Next(), nil
 }

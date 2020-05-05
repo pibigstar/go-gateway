@@ -1,5 +1,10 @@
 package balance
 
+import (
+	"fmt"
+	"strconv"
+)
+
 // 加权轮询负载均衡
 type WeightPollingBalance struct {
 	curIndex int
@@ -15,8 +20,15 @@ type WeightNode struct {
 	effectiveWeight int //有效权重
 }
 
-func (w *WeightPollingBalance) Add(addr string, weight int) error {
-	node := &WeightNode{addr: addr, weight: weight}
+func (w *WeightPollingBalance) Add(params ...string) error {
+	if len(params) != 2 {
+		return fmt.Errorf("params must at lease 2")
+	}
+	weight, err := strconv.Atoi(params[1])
+	if err != nil {
+		return err
+	}
+	node := &WeightNode{addr: params[0], weight: weight}
 	node.effectiveWeight = node.weight
 	w.nodes = append(w.nodes, node)
 	return nil
@@ -50,6 +62,6 @@ func (w *WeightPollingBalance) Next() string {
 	return best.addr
 }
 
-func (w *WeightPollingBalance) Get() (string, error) {
+func (w *WeightPollingBalance) Get(key ...string) (string, error) {
 	return w.Next(), nil
 }
