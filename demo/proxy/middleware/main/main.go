@@ -17,9 +17,14 @@ var addr = "127.0.0.1:7000"
 func main() {
 	//初始化方法数组路由器
 	sliceRouter := middleware.NewRouter()
-	sliceRouter.Group("/base").Use(middleware.TraceLogSliceMW(), func(c *middleware.RouterContext) {
-		c.Rw.Write([]byte("test func"))
-	})
+	sliceRouter.Group("/base").Use(
+		middleware.TraceLogSliceMW(), // trace 打印
+		middleware.RateLimiter(),     // 限流
+
+		// 实际业务处理函数
+		func(c *middleware.RouterContext) {
+			c.Rw.Write([]byte("test middleware"))
+		})
 
 	//请求到反向代理
 	sliceRouter.Group("/").Use(middleware.TraceLogSliceMW(), func(c *middleware.RouterContext) {
@@ -29,6 +34,7 @@ func main() {
 
 	// 创建路由控制器
 	routerHandler := middleware.NewRouterHandler(nil, sliceRouter)
+	fmt.Println("server is staring...")
 	log.Fatal(http.ListenAndServe(addr, routerHandler))
 }
 

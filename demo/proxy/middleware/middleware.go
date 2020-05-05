@@ -41,6 +41,7 @@ type RouterHandler struct {
 	router *Router
 }
 
+// 实现Handler接口
 func (w *RouterHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	c := newRouterContext(rw, req, w.router)
 	if w.core != nil {
