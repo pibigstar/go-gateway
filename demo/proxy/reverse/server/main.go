@@ -32,6 +32,7 @@ func (r *RealServer) Run() {
 	log.Println("Starting http Server at " + r.Addr)
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", r.HelloHandler)
+	mux.HandleFunc("/base", r.HelloHandler)
 	server := &http.Server{
 		Addr:         r.Addr,
 		WriteTimeout: time.Second * 3,
@@ -47,6 +48,10 @@ func (r *RealServer) HelloHandler(w http.ResponseWriter, req *http.Request) {
 	newPath := fmt.Sprintf("http://%s%s\n", r.Addr, req.URL.Path)
 	realIP := fmt.Sprintf("RemoteAddr=%s\n", req.RemoteAddr)
 
-	_, _ = io.WriteString(w, newPath)
-	_, _ = io.WriteString(w, realIP)
+	io.WriteString(w, newPath)
+	io.WriteString(w, realIP)
+}
+
+func (r *RealServer) BaseHandler(w http.ResponseWriter, req *http.Request) {
+	io.WriteString(w, "this is base")
 }

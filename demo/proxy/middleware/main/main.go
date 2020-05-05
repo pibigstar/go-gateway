@@ -3,29 +3,46 @@ package main
 import (
 	"fmt"
 	"github/pibigstar/go-gateway/demo/proxy/balance"
+	"github/pibigstar/go-gateway/demo/proxy/middleware"
+	"log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
 	"strings"
 )
 
-// 带负载均衡的反向代理
+var addr = "127.0.0.1:7000"
+
+// 中间件测试
 func main() {
-	// 加权负载均衡
+	//初始化方法数组路由器
+	sliceRouter := middleware.NewRouter()
+	sliceRouter.Group("/base").Use(middleware.TraceLogSliceMW(), func(c *middleware.RouterContext) {
+		c.Rw.Write([]byte("test func"))
+	})
+
+	//请求到反向代理
+	sliceRouter.Group("/").Use(middleware.TraceLogSliceMW(), func(c *middleware.RouterContext) {
+		fmt.Println("reverseProxy")
+		reverseProxy(c).ServeHTTP(c.Rw, c.Req)
+	})
+
+	// 创建路由控制器
+	routerHandler := middleware.NewRouterHandler(nil, sliceRouter)
+	log.Fatal(http.ListenAndServe(addr, routerHandler))
+}
+
+// 反向代理
+var reverseProxy = func(c *middleware.RouterContext) http.Handler {
 	wp := balance.LoadBalanceFactory(balance.WeightPollingType)
 	wp.Add("http://127.0.0.1:7001", "10")
 	wp.Add("http://127.0.0.1:7002", "20")
 
-	// 拥有了加权负载的控制器
-	reverseProxy := NewReverseProxyWithBalance(wp)
-
-	if err := http.ListenAndServe(":7000", reverseProxy); err != nil {
-		panic(err)
-	}
+	return NewReverseProxyWithBalance(c, wp)
 }
 
 // 带负载均衡得反向代理
-func NewReverseProxyWithBalance(balance balance.Balance) *httputil.ReverseProxy {
+func NewReverseProxyWithBalance(c *middleware.RouterContext, balance balance.Balance) *httputil.ReverseProxy {
 	director := func(req *http.Request) {
 		targetAddr, err := balance.Get()
 		if err != nil {
