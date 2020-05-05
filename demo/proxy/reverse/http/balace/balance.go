@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github/pibigstar/go-gateway/demo/proxy/balance"
+	"github/pibigstar/go-gateway/demo/balance"
 	"net/http"
 	"net/http/httputil"
 	"net/url"

@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github/pibigstar/go-gateway/demo/proxy/balance"
-	"github/pibigstar/go-gateway/demo/proxy/middleware"
+	"github/pibigstar/go-gateway/demo/balance"
+	"github/pibigstar/go-gateway/demo/middleware"
 	"log"
 	"net/http"
 	"net/http/httputil"
