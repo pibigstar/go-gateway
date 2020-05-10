@@ -1,4 +1,4 @@
-package main
+package proxy
 
 import (
 	"fmt"
@@ -8,21 +8,6 @@ import (
 	"net/url"
 	"strings"
 )
-
-// 带负载均衡的反向代理
-func main() {
-	// 加权负载均衡
-	wp := balance.LoadBalanceFactory(balance.WeightPollingType)
-	wp.Add("http://127.0.0.1:7001", "10")
-	wp.Add("http://127.0.0.1:7002", "20")
-
-	// 拥有了加权负载的控制器
-	reverseProxy := NewReverseProxyWithBalance(wp)
-
-	if err := http.ListenAndServe(":7000", reverseProxy); err != nil {
-		panic(err)
-	}
-}
 
 // 带负载均衡得反向代理
 func NewReverseProxyWithBalance(balance balance.Balance) *httputil.ReverseProxy {
