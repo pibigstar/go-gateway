@@ -13,7 +13,7 @@ import (
 var (
 	ErrServerClosed     = errors.New("tcp: Server closed")
 	ErrAbortHandler     = errors.New("tcp: abort TCPHandler")
-	ServerContextKey    = &contextKey{"tcp-server"}
+	ServerContextKey    = &contextKey{"tcp-tcp"}
 	LocalAddrContextKey = &contextKey{"local-addr"}
 )
 

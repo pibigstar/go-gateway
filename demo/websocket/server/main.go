@@ -13,7 +13,7 @@ const addr = ":7003"
 func main() {
 	http.HandleFunc("/echo", echo)
 	http.HandleFunc("/", home)
-	log.Println("Starting websocket server at " + addr)
+	log.Println("Starting websocket tcp at " + addr)
 	log.Fatal(http.ListenAndServe(addr, nil))
 }
 
@@ -110,8 +110,8 @@ window.addEventListener("load", function(evt) {
 <body>
 <table>
 <tr><td valign="top" width="50%">
-<p>Click "Open" to create a connection to the server, 
-"Send" to send a message to the server and "Close" to close the connection. 
+<p>Click "Open" to create a connection to the tcp, 
+"Send" to send a message to the tcp and "Close" to close the connection. 
 You can change the message and send multiple times.
 <p>
 <form>

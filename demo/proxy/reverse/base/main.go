@@ -31,7 +31,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	r.URL.Scheme = proxy.Scheme
 	r.URL.Host = proxy.Host
 
-	// 2. 请求下游服务器（server）
+	// 2. 请求下游服务器（tcp）
 	resp, err := http.DefaultTransport.RoundTrip(r)
 	if err != nil {
 		log.Print(err)

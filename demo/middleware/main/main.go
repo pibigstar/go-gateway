@@ -37,7 +37,7 @@ func main() {
 
 	// 创建路由控制器
 	routerHandler := middleware.NewRouterHandler(nil, sliceRouter)
-	fmt.Println("server is staring...")
+	fmt.Println("tcp is staring...")
 	log.Fatal(http.ListenAndServe(addr, routerHandler))
 }
 

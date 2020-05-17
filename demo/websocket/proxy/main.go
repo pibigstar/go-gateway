@@ -17,6 +17,6 @@ func main() {
 	rb.Add("http://127.0.0.1:7003", "50")
 
 	reverseProxy := proxy.NewReverseProxyWithBalance(rb)
-	log.Println("Starting http server at " + addr)
+	log.Println("Starting http tcp at " + addr)
 	log.Fatal(http.ListenAndServe(addr, reverseProxy))
 }
