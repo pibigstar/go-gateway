@@ -15,6 +15,11 @@ type EchoService struct {
 	*echo.UnimplementedEchoServer
 }
 
+func (s *EchoService) UnaryEcho(ctx context.Context, in *echo.EchoRequest) (*echo.EchoResponse, error) {
+	fmt.Printf("request received: %v, sending echo\n", in)
+	return &echo.EchoResponse{Message: in.Message}, nil
+}
+
 func (s *EchoService) ServerStreamingEcho(in *echo.EchoRequest, stream echo.Echo_ServerStreamingEchoServer) error {
 	fmt.Printf("--- ServerStreamingEcho ---\n")
 	fmt.Printf("request received: %v\n", in)
@@ -63,10 +68,4 @@ func (s *EchoService) BidirectionalStreamingEcho(stream echo.Echo_BidirectionalS
 			return err
 		}
 	}
-}
-
-func (s *EchoService) UnaryEcho(ctx context.Context, in *echo.EchoRequest) (*echo.EchoResponse, error) {
-	fmt.Printf("--- UnaryEcho ---\n")
-	fmt.Printf("request received: %v, sending echo\n", in)
-	return &echo.EchoResponse{Message: in.Message}, nil
 }
