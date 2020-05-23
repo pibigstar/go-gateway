@@ -3,11 +3,16 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/mwitkow/grpc-proxy/proxy"
-	"github/pibigstar/go-gateway/demo/balance"
-	"google.golang.org/grpc"
 	"log"
 	"net"
+	"time"
+
+	"github.com/mwitkow/grpc-proxy/proxy"
+	"google.golang.org/grpc"
+
+	"github/pibigstar/go-gateway/demo/balance"
+	"github/pibigstar/go-gateway/demo/grpc/middleware/interceptor"
+	"github/pibigstar/go-gateway/demo/public"
 )
 
 const (
@@ -17,22 +22,26 @@ const (
 	grpcServer = "localhost:5000"
 )
 
-// grpc代理服务器
 func main() {
-	listener, err := net.Listen("tcp", proxyServer)
+	lis, err := net.Listen("tcp", proxyServer)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	wp := balance.LoadBalanceFactory(balance.WeightPollingType)
 	wp.Add(grpcServer, "10")
-
 	grpcProxyHandler := NewGrpcLoadBalanceHandler(wp)
-	server := grpc.NewServer(
+
+	counter, _ := public.NewFlowCountService("local_app", time.Second)
+	s := grpc.NewServer(
+		//流式方法拦截
+		grpc.ChainStreamInterceptor(interceptor.GrpcAuthStreamInterceptor, interceptor.GrpcFlowCountStreamInterceptor(counter)),
+		//自定义codec
 		grpc.CustomCodec(proxy.Codec()),
+		//自定义代理全局回调
 		grpc.UnknownServiceHandler(grpcProxyHandler))
 
-	fmt.Printf("grpc proxy server listening at %v\n", listener.Addr())
-	if err := server.Serve(listener); err != nil {
+	fmt.Printf("server listening at %v\n", lis.Addr())
+	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
