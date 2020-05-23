@@ -16,7 +16,8 @@ const (
 	timestampFormat = time.StampNano // "Jan _2 15:04:05.000"
 	streamingCount  = 10
 	message         = "this is examples/metadata"
-	addr            = "localhost:5000"
+	addr            = "localhost:5000" // grpc实际服务地址
+	proxyAddr       = "localhost:5001" // grpc代理服务器地址
 )
 
 func main() {

@@ -3,7 +3,7 @@ syntax = "proto3";
 package pb;
 option go_package  = "pb/echo";
 
-import "google/api/annotations.proto";
+import "extra/src/google/api/annotations.proto";
 
 service Echo {
     rpc UnaryEcho (EchoRequest) returns (EchoResponse){
