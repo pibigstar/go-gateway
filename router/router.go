@@ -9,7 +9,11 @@ import (
 
 func init() {
 	s := g.Server()
+
+	s.Use(middleware.Recovery())
 	s.Use(middleware.Trace())
+	s.Use(middleware.IPLimit())
+
 	s.Group("/", func(group *ghttp.RouterGroup) {
 		group.GET("/login", user.Login)
 	})
