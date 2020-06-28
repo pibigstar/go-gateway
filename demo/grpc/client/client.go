@@ -32,14 +32,14 @@ func main() {
 	//调用一元方法
 	unaryCallWithMetadata(client, message)
 
-	//服务端流式
-	serverStreamingWithMetadata(client, message)
-
-	//客户端流式
-	clientStreamWithMetadata(client, message)
-
-	//双向流式
-	bidirectionalWithMetadata(client, message)
+	////服务端流式
+	//serverStreamingWithMetadata(client, message)
+	//
+	////客户端流式
+	//clientStreamWithMetadata(client, message)
+	//
+	////双向流式
+	//bidirectionalWithMetadata(client, message)
 
 	time.Sleep(3 * time.Second)
 }
@@ -50,13 +50,17 @@ func unaryCallWithMetadata(client echo.EchoClient, message string) {
 	// Create metadata and context.
 	md := metadata.Pairs("timestamp", time.Now().Format(timestampFormat))
 	md.Append("authorization", "Bearer some-secret-token")
-
 	ctx := metadata.NewOutgoingContext(context.Background(), md)
-	r, err := client.UnaryEcho(ctx, &echo.EchoRequest{Message: message})
-	if err != nil {
-		log.Fatalf("failed to call UnaryEcho: %v", err)
-	}
-	fmt.Printf("response:%v\n", r.Message)
+	ctx, cancel := context.WithCancel(ctx)
+	go func() {
+		r, err := client.UnaryEcho(ctx, &echo.EchoRequest{Message: message})
+		if err != nil {
+			log.Fatalf("failed to call UnaryEcho: %v", err)
+		}
+		fmt.Printf("response:%v\n", r.Message)
+	}()
+	cancel()
+	return
 }
 
 func serverStreamingWithMetadata(c echo.EchoClient, message string) {
