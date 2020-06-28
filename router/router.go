@@ -3,7 +3,7 @@ package router
 import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
-	"github/pibigstar/go-gateway/app/api/user"
+	"github/pibigstar/go-gateway/app/api/admin"
 	"github/pibigstar/go-gateway/middleware"
 )
 
@@ -15,6 +15,6 @@ func init() {
 	s.Use(middleware.IPLimit())
 
 	s.Group("/", func(group *ghttp.RouterGroup) {
-		group.GET("/login", user.Login)
+		group.GET("/login", admin.Login)
 	})
 }
