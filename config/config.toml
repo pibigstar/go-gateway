@@ -1,0 +1,24 @@
+# HTTP Server
+[server]
+	Address     = ":8100"
+	ServerAgent = "go-gatewary"
+	LogPath     = "/tmp/log/go-gatewary/server"
+    AccessLogEnabled = true
+    ErrorLogEnabled  = true
+    PProfEnabled     = true
+
+# Logger.
+[logger]
+    Path        = "/tmp/log/go-gatewary"
+    Level       = "all"
+    Stdout      = true
+
+# Database.
+[database]
+    link  = "mysql:root:123456@tcp(127.0.0.1:3306)/go_gateway"
+    debug = true
+    # Database logger.
+    [database.logger]
+        Path   = "/tmp/log/go-gatewary/sql"
+        Level  = "all"
+        Stdout = true
