@@ -5,6 +5,7 @@ import (
 	"github/pibigstar/go-gateway/app/model"
 	"github/pibigstar/go-gateway/app/request"
 	"github/pibigstar/go-gateway/app/response"
+	utils "github/pibigstar/go-gateway/utils/token"
 )
 
 // Login godoc
@@ -27,5 +28,12 @@ func Login(r *ghttp.Request) {
 	if err != nil {
 		response.Error(r, err)
 	}
-	response.Success(r, resp)
+	adminInfo := &response.AdminInfo{
+		Id:       resp.Id,
+		UserName: resp.UserName,
+	}
+
+	// 生成token
+	token := utils.GenJwtToken(adminInfo)
+	response.Success(r, token)
 }

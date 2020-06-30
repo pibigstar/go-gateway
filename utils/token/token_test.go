@@ -5,10 +5,7 @@ import (
 )
 
 func TestToken(t *testing.T) {
-	token, err := GenJwtToken("123456")
-	if err != nil {
-		t.Error(err)
-	}
+	token := GenJwtToken("123456")
 
 	t.Log("token:", token)
 

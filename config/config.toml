@@ -17,6 +17,9 @@
 [database]
     link  = "mysql:root:123456@tcp(127.0.0.1:3306)/go_gateway"
     debug = true
+    MaxIdle = 10
+    MaxOpen = 50
+    MaxLifetime = 30
     # Database logger.
     [database.logger]
         Path   = "/tmp/log/go-gatewary/sql"

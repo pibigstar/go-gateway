@@ -9,8 +9,6 @@ import (
 
 func main() {
 	s := g.Server()
-	s.Plugin(&swagger.Swagger{
-		BasicPath: "docs",
-	})
+	s.Plugin(&swagger.Swagger{})
 	s.Run()
 }

@@ -3,7 +3,6 @@ package model
 import (
 	"context"
 	"errors"
-	"github.com/gogf/gf/frame/g"
 	"github/pibigstar/go-gateway/app/request"
 	"github/pibigstar/go-gateway/utils"
 )
@@ -25,7 +24,7 @@ func (*AdminModel) Table() string {
 }
 
 func (a *AdminModel) AdminLogin(ctx context.Context, req *request.AdminLoginReq) (*AdminModel, error) {
-	record, err := g.DB().Table(a.Table()).
+	record, err := db.Table(a.Table()).Fields("id,user_name,salt,password").
 		Where("user_name = ?", req.UserName).
 		Where("is_delete = 0").One()
 	if err != nil {

@@ -20,15 +20,16 @@ const (
 )
 
 // 生成token
-func GenJwtToken(userId string) (string, error) {
+func GenJwtToken(userInfo interface{}) string {
 	claims := make(jwt.MapClaims)
 	// 有效期
 	claims[TokenClaimEXP] = time.Now().Add(24 * time.Hour).Unix()
-	claims[TokenClaimUserId] = userId
+	claims[TokenClaimUserId] = userInfo
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	return token.SignedString([]byte(secretKey))
+	s, _ := token.SignedString([]byte(secretKey))
+	return s
 }
 
 // 检查token是否有效
