@@ -1,6 +1,9 @@
 package response
 
-import "github.com/gogf/gf/net/ghttp"
+import (
+	"github.com/gogf/gf/net/ghttp"
+	"github/pibigstar/go-gateway/utils/errx"
+)
 
 type Response struct {
 	Code  int         `json:"code"`
@@ -9,6 +12,13 @@ type Response struct {
 }
 
 func Error(r *ghttp.Request, err error) {
+	if e, ok := err.(errx.ErrorX); ok {
+		_ = r.Response.WriteJsonExit(Response{
+			Code:  e.Code(),
+			Error: e.Error(),
+		})
+		return
+	}
 	_ = r.Response.WriteJsonExit(Response{
 		Code:  500,
 		Error: err.Error(),
