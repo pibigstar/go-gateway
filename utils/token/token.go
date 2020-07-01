@@ -3,6 +3,10 @@ package token
 import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gogf/gf/net/ghttp"
+	"github/pibigstar/go-gateway/app/const/code"
+	"github/pibigstar/go-gateway/app/response"
+	"github/pibigstar/go-gateway/utils/errx"
 	"time"
 )
 
@@ -79,4 +83,27 @@ func GetUserInfoFromToken(tokenString string) (value interface{}, found bool) {
 	}
 
 	return nil, false
+}
+
+// 从token中拿到用户信息
+func GetUserInfoFromCookie(r *ghttp.Request) (*response.AdminInfo, error) {
+	c, err := r.Request.Cookie("token")
+	if err != nil {
+		return nil, errx.New(code.Error_Not_Login)
+	}
+
+	token, err := ParseJwtToken(c.Value)
+	if err != nil {
+		return nil, errx.New(code.Error_Token_Expired)
+	}
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok {
+		if v, ok := claims[TokenClaimUserId]; ok {
+			if userInfo, ok := v.(*response.AdminInfo); ok {
+				return userInfo, nil
+			}
+		}
+	}
+
+	return nil, errx.New(code.Error_Not_Login)
 }

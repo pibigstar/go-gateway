@@ -16,5 +16,6 @@ func init() {
 
 	s.Group("/admin", func(group *ghttp.RouterGroup) {
 		group.GET("/login", admin.Login)
+		group.GET("/info", admin.Info)
 	})
 }

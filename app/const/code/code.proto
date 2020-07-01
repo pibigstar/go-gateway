@@ -14,4 +14,5 @@ enum Error {
     // admin
     User_Not_Exist = 10001;  // 用户不存在
     Password_Error = 10002;  // 密码错误
+    Not_Login      = 10003;  // 未登录
 }

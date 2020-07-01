@@ -47,3 +47,23 @@ func (a *AdminModel) AdminLogin(req *request.AdminLoginReq) (*AdminModel, error)
 	}
 	return adminModel, err
 }
+
+func (a *AdminModel) AdminInfo(userId int64) (*AdminModel, error) {
+	record, err := db.Table(a.Table()).Fields("user_name").
+		Where("id = ?", userId).
+		Where("is_delete = 0").One()
+	if err != nil {
+		if gdb.ErrNoRows == err {
+			return nil, errx.New(code.Error_User_Not_Exist)
+		}
+		return nil, err
+	}
+
+	var adminModel *AdminModel
+	err = record.Struct(&adminModel)
+	if err != nil {
+		return nil, err
+	}
+
+	return adminModel, err
+}
