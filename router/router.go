@@ -18,5 +18,6 @@ func init() {
 		group.POST("/login", admin.Login)
 		group.GET("/info", admin.Info)
 		group.GET("/logout", admin.Logout)
+		group.POST("/changePwd", admin.ChangePwd)
 	})
 }

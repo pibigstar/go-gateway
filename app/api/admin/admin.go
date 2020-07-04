@@ -85,5 +85,32 @@ func Logout(r *ghttp.Request) {
 	if err != nil {
 		response.Error(r, err)
 	}
-	response.Success(r, "")
+	response.Success(r)
+}
+
+// Logout godoc
+// @Summary 管理员修改密码
+// @Description 管理员修改密码接口
+// @Tags 管理员接口
+// @ID /admin/changePwd
+// @Accept  json
+// @Produce  json
+// @Param body body request.ChangePasswordReq true "body"
+// @Success 200 {object} response.Response{data=response.Response} "success"
+// @Router /admin/changePwd [post]
+func ChangePwd(r *ghttp.Request) {
+	_, err := token.GetUserInfoFromSession(r)
+	if err != nil {
+		response.Error(r, err)
+	}
+
+	var req *request.ChangePasswordReq
+	if err := r.Parse(&req); err != nil {
+		response.Error(r, err)
+	}
+
+	if err := model.MAdminModel.ChangePwd(req); err != nil {
+		response.Error(r, err)
+	}
+	response.Success(r)
 }

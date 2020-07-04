@@ -5,6 +5,53 @@
         "license": {}
     },
     "paths": {
+        "/admin/changePwd": {
+            "post": {
+                "description": "管理员修改密码接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理员接口"
+                ],
+                "summary": "管理员修改密码",
+                "operationId": "/admin/changePwd",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ChangePasswordReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.Response"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/admin/info": {
             "get": {
                 "description": "管理员信息接口",
@@ -134,6 +181,23 @@
                     "type": "string"
                 },
                 "userName": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "request.ChangePasswordReq": {
+            "type": "object",
+            "properties": {
+                "newPassword": {
+                    "description": "密码",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "密码",
+                    "type": "string"
+                },
+                "userName": {
                     "type": "string"
                 }
             }
@@ -148,6 +212,9 @@
                     "type": "object"
                 },
                 "error": {
+                    "type": "string"
+                },
+                "msg": {
                     "type": "string"
                 }
             }

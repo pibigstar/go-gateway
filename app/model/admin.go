@@ -49,7 +49,7 @@ func (a *AdminModel) AdminLogin(req *request.AdminLoginReq) (*AdminModel, error)
 }
 
 func (a *AdminModel) AdminInfo(userId int64) (*AdminModel, error) {
-	record, err := db.Table(a.Table()).Fields("user_name").
+	record, err := db.Table(a.Table()).Fields("id,user_name").
 		Where("id = ?", userId).
 		Where("is_delete = 0").One()
 	if err != nil {
@@ -66,4 +66,34 @@ func (a *AdminModel) AdminInfo(userId int64) (*AdminModel, error) {
 	}
 
 	return adminModel, err
+}
+
+func (a *AdminModel) ChangePwd(req *request.ChangePasswordReq) error {
+	record, err := db.Table(a.Table()).Fields("id,user_name,salt,password").
+		Where("user_name = ?", req.UserName).
+		Where("is_delete = 0").One()
+	if err != nil {
+		if gdb.ErrNoRows == err {
+			return errx.New(code.Error_User_Not_Exist)
+		}
+		return err
+	}
+
+	var adminModel *AdminModel
+	err = record.Struct(&adminModel)
+	if err != nil {
+		return err
+	}
+
+	pwd := utils.GenSaltPassword(adminModel.Salt, req.Password)
+	if adminModel.Password != pwd {
+		return errx.New(code.Error_Password_Error)
+	}
+	// 更换密码
+	encryptPwd := utils.GenSaltPassword(adminModel.Salt, req.NewPassword)
+	_, err = db.Table(a.Table()).
+		Data("password", encryptPwd).
+		Where("id = ?", adminModel.Id).
+		Update()
+	return err
 }
