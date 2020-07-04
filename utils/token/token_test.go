@@ -12,7 +12,7 @@ func TestToken(t *testing.T) {
 	isToken := CheckJwtToken(token)
 	t.Log("isToken:", isToken)
 
-	if uid, found := GetUserInfoFromToken(token); found {
+	if uid, found := GetValueFromToken(token); found {
 		t.Log("用户id：", uid)
 	}
 }

@@ -10,6 +10,8 @@ require (
 	github.com/garyburd/redigo v1.6.0
 	github.com/gogf/gf v1.13.1
 	github.com/gogf/swagger v1.1.0
+	github.com/goinggo/mapstructure v0.0.0-20140717182941-194205d9b4a9
+	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 	github.com/golang/protobuf v1.4.0
 	github.com/google/uuid v1.1.1
 	github.com/gorilla/websocket v1.4.2
@@ -31,7 +33,7 @@ require (
 	golang.org/x/sys v0.0.0-20200625212154-ddb9806d33ae // indirect
 	golang.org/x/text v0.3.3 // indirect
 	golang.org/x/time v0.0.0-20200416051211-89c76fbcd5d1
-	golang.org/x/tools v0.0.0-20200626171337-aa94e735be7f // indirect
+	golang.org/x/tools v0.0.0-20200702044944-0cc1aa72b347 // indirect
 	google.golang.org/genproto v0.0.0-20200420144010-e5e8543f8aeb
 	google.golang.org/grpc v1.30.0-dev.1
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect

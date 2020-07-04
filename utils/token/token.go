@@ -4,8 +4,10 @@ import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gogf/gf/net/ghttp"
-	"github/pibigstar/go-gateway/app/const/code"
+	"github/pibigstar/go-gateway/app/consts"
+	"github/pibigstar/go-gateway/app/consts/code"
 	"github/pibigstar/go-gateway/app/response"
+	"github/pibigstar/go-gateway/utils"
 	"github/pibigstar/go-gateway/utils/errx"
 	"time"
 )
@@ -14,21 +16,21 @@ const (
 	// 加密的key值
 	secretKey = "pibigstar"
 	// token有效期,jwt默认key
-	TokenClaimEXP = "exp"
+	ClaimTokenEXP = "exp"
 	// token使用的范围
-	TokenClaimScope = "web"
-	TokenClaimAdmin = "admin"
+	ClaimTokenScope = "web"
+	ClaimTokenAdmin = "admin"
 
-	// 将用户userId存放到token中
-	TokenClaimUserId = "userId"
+	// 用户信息
+	ClaimTokenUserId = "userId"
 )
 
 // 生成token
 func GenJwtToken(userInfo interface{}) string {
 	claims := make(jwt.MapClaims)
 	// 有效期
-	claims[TokenClaimEXP] = time.Now().Add(24 * time.Hour).Unix()
-	claims[TokenClaimUserId] = userInfo
+	claims[ClaimTokenEXP] = time.Now().Add(24 * time.Hour).Unix()
+	claims[ClaimTokenUserId] = userInfo
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
@@ -69,41 +71,45 @@ func ParseJwtToken(tokenString string) (*jwt.Token, error) {
 	return token, err
 }
 
-// 从token中拿到用户信息
-func GetUserInfoFromToken(tokenString string) (value interface{}, found bool) {
-	token, err := ParseJwtToken(tokenString)
+func GetValueFromToken(t string) (interface{}, bool) {
+	token, err := ParseJwtToken(t)
 	if err != nil {
 		return nil, false
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok {
-		if v, ok := claims[TokenClaimUserId]; ok {
+		if v, ok := claims[ClaimTokenUserId]; ok {
 			return v, true
 		}
 	}
-
 	return nil, false
 }
 
 // 从token中拿到用户信息
+func GetUserInfoFromToken(tokenString string) (*response.AdminInfo, error) {
+	if v, b := GetValueFromToken(tokenString); b {
+		adminInfo := &response.AdminInfo{}
+		if err := utils.MapToStruct(v, adminInfo); err == nil {
+			return adminInfo, nil
+		}
+	}
+	return nil, errx.New(code.Error_Not_Login)
+}
+
+// 从cookie中拿到用户信息
 func GetUserInfoFromCookie(r *ghttp.Request) (*response.AdminInfo, error) {
 	c, err := r.Request.Cookie("token")
 	if err != nil {
 		return nil, errx.New(code.Error_Not_Login)
 	}
+	return GetUserInfoFromToken(c.Value)
+}
 
-	token, err := ParseJwtToken(c.Value)
-	if err != nil {
-		return nil, errx.New(code.Error_Token_Expired)
+// 从session中拿到用户信息
+func GetUserInfoFromSession(r *ghttp.Request) (*response.AdminInfo, error) {
+	t, ok := r.Session.Get(consts.UserTokenSessionKey).(string)
+	if !ok || t == "" {
+		return nil, errx.New(code.Error_Not_Login)
 	}
-
-	if claims, ok := token.Claims.(jwt.MapClaims); ok {
-		if v, ok := claims[TokenClaimUserId]; ok {
-			if userInfo, ok := v.(*response.AdminInfo); ok {
-				return userInfo, nil
-			}
-		}
-	}
-
-	return nil, errx.New(code.Error_Not_Login)
+	return GetUserInfoFromToken(t)
 }

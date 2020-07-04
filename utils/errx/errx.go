@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gogf/gf/encoding/gjson"
 	"github.com/gogf/gf/os/glog"
-	"github/pibigstar/go-gateway/app/const/code/locales"
+	"github/pibigstar/go-gateway/app/consts/code/locales"
 	"strings"
 )
 

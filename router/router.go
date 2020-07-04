@@ -15,7 +15,8 @@ func init() {
 	s.Use(middleware.IPLimit())
 
 	s.Group("/admin", func(group *ghttp.RouterGroup) {
-		group.GET("/login", admin.Login)
+		group.POST("/login", admin.Login)
 		group.GET("/info", admin.Info)
+		group.GET("/logout", admin.Logout)
 	})
 }

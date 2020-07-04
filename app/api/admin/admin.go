@@ -2,6 +2,8 @@ package admin
 
 import (
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/golang/glog"
+	"github/pibigstar/go-gateway/app/consts"
 	"github/pibigstar/go-gateway/app/model"
 	"github/pibigstar/go-gateway/app/request"
 	"github/pibigstar/go-gateway/app/response"
@@ -34,12 +36,17 @@ func Login(r *ghttp.Request) {
 	}
 
 	// 生成token
-	response.Success(r, token.GenJwtToken(adminInfo))
+	t := token.GenJwtToken(adminInfo)
+	err = r.Session.Set(consts.UserTokenSessionKey, t)
+	if err != nil {
+		glog.Error(err)
+	}
+	response.Success(r, t)
 }
 
-// Login godoc
-// @Summary 登陆接口
-// @Description 管理员登陆接口
+// Info godoc
+// @Summary 管理员信息
+// @Description 管理员信息接口
 // @Tags 管理员接口
 // @ID /admin/info
 // @Accept  json
@@ -47,7 +54,7 @@ func Login(r *ghttp.Request) {
 // @Success 200 {object} response.Response{data=response.Response} "success"
 // @Router /admin/info [get]
 func Info(r *ghttp.Request) {
-	userInfo, err := token.GetUserInfoFromCookie(r)
+	userInfo, err := token.GetUserInfoFromSession(r)
 	if err != nil {
 		response.Error(r, err)
 		return
@@ -61,6 +68,22 @@ func Info(r *ghttp.Request) {
 		Id:       resp.Id,
 		UserName: resp.UserName,
 	}
-	// 生成token
 	response.Success(r, adminInfo)
+}
+
+// Logout godoc
+// @Summary 管理员登出
+// @Description 管理员登出接口
+// @Tags 管理员接口
+// @ID /admin/logout
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} response.Response{data=response.Response} "success"
+// @Router /admin/logout [get]
+func Logout(r *ghttp.Request) {
+	err := r.Session.Clear()
+	if err != nil {
+		response.Error(r, err)
+	}
+	response.Success(r, "")
 }

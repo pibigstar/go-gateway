@@ -5,6 +5,8 @@ import (
 	"crypto/sha256"
 	"fmt"
 	"io"
+
+	"github.com/goinggo/mapstructure"
 )
 
 func GenSaltPassword(salt, password string) string {
@@ -21,4 +23,8 @@ func MD5(s string) string {
 	h := md5.New()
 	_, _ = io.WriteString(h, s)
 	return fmt.Sprintf("%x", h.Sum(nil))
+}
+
+func MapToStruct(m interface{}, dst interface{}) error {
+	return mapstructure.Decode(m, dst)
 }

@@ -2,7 +2,7 @@ package model
 
 import (
 	"github.com/gogf/gf/database/gdb"
-	"github/pibigstar/go-gateway/app/const/code"
+	"github/pibigstar/go-gateway/app/consts/code"
 	"github/pibigstar/go-gateway/app/request"
 	"github/pibigstar/go-gateway/utils"
 	"github/pibigstar/go-gateway/utils/errx"
