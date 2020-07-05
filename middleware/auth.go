@@ -12,7 +12,6 @@ func Auth() func(r *ghttp.Request) {
 		_, err := token.GetUserInfoFromSession(r)
 		if err != nil {
 			response.Error(r, err)
-			return
 		}
 		r.Middleware.Next()
 	}
