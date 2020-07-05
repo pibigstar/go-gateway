@@ -18,7 +18,6 @@ func Error(r *ghttp.Request, err error) {
 			Code:  e.Code(),
 			Error: e.Error(),
 		})
-		return
 	}
 	_ = r.Response.WriteJsonExit(Response{
 		Code:  500,

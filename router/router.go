@@ -23,7 +23,8 @@ func init() {
 	})
 
 	s.Group("/service", func(group *ghttp.RouterGroup) {
-		group.Hook("/*", ghttp.HOOK_BEFORE_SERVE, middleware.Auth())
+		//group.Hook("/*", ghttp.HOOK_BEFORE_SERVE, middleware.Auth())
+		group.Middleware(middleware.Auth())
 		group.GET("/list", service.List)
 	})
 }

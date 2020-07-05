@@ -9,9 +9,11 @@ import (
 // 用户权限校验
 func Auth() func(r *ghttp.Request) {
 	return func(r *ghttp.Request) {
-		_, err := token.GetUserInfoFromSession(r)
-		if err != nil {
-			response.Error(r, err)
+		if !r.IsFileRequest() {
+			_, err := token.GetUserInfoFromSession(r)
+			if err != nil {
+				response.Error(r, err)
+			}
 		}
 		r.Middleware.Next()
 	}
