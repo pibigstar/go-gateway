@@ -5,7 +5,6 @@ import (
 	"github.com/gogf/gf/encoding/gjson"
 	"github.com/gogf/gf/os/glog"
 	"github/pibigstar/go-gateway/app/consts/code/locales"
-	"strings"
 )
 
 var JsonMsg *gjson.Json
@@ -24,28 +23,29 @@ type Coder interface {
 
 type ErrorX struct {
 	code Coder
-	msg  string
+	args []interface{}
 }
 
 func (e ErrorX) Error() string {
-	if e.msg == "" && JsonMsg != nil {
-		if msg, ok := JsonMsg.Get(fmt.Sprintf("%d", e.code)).(string); ok {
-			e.msg = msg
+	msg := fmt.Sprintf("code: %d", e.code)
+	if JsonMsg != nil {
+		if format, ok := JsonMsg.Get(fmt.Sprintf("%d", e.code)).(string); ok {
+			msg = format
+			if len(e.args) > 0 {
+				msg = fmt.Sprintf(format, e.args...)
+			}
 		}
 	}
-	return e.msg
+	return msg
 }
 
 func (e ErrorX) Code() int {
 	return e.code.Code()
 }
 
-func New(code Coder, msg ...string) ErrorX {
-	e := ErrorX{
+func New(code Coder, args ...interface{}) ErrorX {
+	return ErrorX{
 		code: code,
+		args: args,
 	}
-	if len(msg) > 0 {
-		e.msg = strings.Join(msg, ",")
-	}
-	return e
 }
