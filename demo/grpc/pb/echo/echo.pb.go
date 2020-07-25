@@ -140,7 +140,7 @@ var _ grpc.ClientConnInterface
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion6
 
-// EchoClient is the client API for Echo service.
+// EchoClient is the client API for Echo gateway.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type EchoClient interface {
@@ -264,7 +264,7 @@ func (x *echoBidirectionalStreamingEchoClient) Recv() (*EchoResponse, error) {
 	return m, nil
 }
 
-// EchoServer is the server API for Echo service.
+// EchoServer is the server API for Echo gateway.
 type EchoServer interface {
 	UnaryEcho(context.Context, *EchoRequest) (*EchoResponse, error)
 	ServerStreamingEcho(*EchoRequest, Echo_ServerStreamingEchoServer) error

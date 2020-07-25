@@ -48,7 +48,7 @@ option objc_class_prefix = "GAPI";
 //       google.api.HttpBody http_body = 2;
 //     }
 //
-//     service ResourceService {
+//     gateway ResourceService {
 //       rpc GetResource(GetResourceRequest) returns (google.api.HttpBody);
 //       rpc UpdateResource(google.api.HttpBody) returns
 //       (google.protobuf.Empty);
@@ -56,7 +56,7 @@ option objc_class_prefix = "GAPI";
 //
 // Example with streaming methods:
 //
-//     service CaldavService {
+//     gateway CaldavService {
 //       rpc GetCalendar(stream google.api.HttpBody)
 //         returns (stream google.api.HttpBody);
 //       rpc UpdateCalendar(stream google.api.HttpBody)

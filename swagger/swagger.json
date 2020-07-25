@@ -171,7 +171,51 @@
                 }
             }
         },
-        "/service/list": {
+        "/gateway/detail": {
+            "get": {
+                "description": "服务详情接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "服务详情接口"
+                ],
+                "summary": "服务详情接口",
+                "operationId": "/gateway/detail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "服务ID",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.Response"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/gateway/list": {
             "get": {
                 "description": "服务列表接口",
                 "consumes": [
@@ -184,7 +228,7 @@
                     "服务列表接口"
                 ],
                 "summary": "服务列表接口",
-                "operationId": "/service/list",
+                "operationId": "/gateway/list",
                 "parameters": [
                     {
                         "type": "string",

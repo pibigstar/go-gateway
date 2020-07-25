@@ -24,13 +24,13 @@ option java_package = "com.google.api";
 option objc_class_prefix = "GAPI";
 
 
-// Defines the HTTP configuration for an API service. It contains a list of
+// Defines the HTTP configuration for an API gateway. It contains a list of
 // [HttpRule][google.api.HttpRule], each specifying the mapping of an RPC method
 // to one or more HTTP REST API methods.
 message Http {
   // A list of HTTP configuration rules that apply to individual API methods.
   //
-  // **NOTE:** All service configuration rules follow "last one wins" order.
+  // **NOTE:** All gateway configuration rules follow "last one wins" order.
   repeated HttpRule rules = 1;
 
   // When set to true, URL path parmeters will be fully URI-decoded except in
@@ -55,7 +55,7 @@ message Http {
 // operation on a resource collection of messages:
 //
 //
-//     service Messaging {
+//     gateway Messaging {
 //       rpc GetMessage(GetMessageRequest) returns (Message) {
 //         option (google.api.http).get = "/v1/messages/{message_id}/{sub.subfield}";
 //       }
@@ -95,7 +95,7 @@ message Http {
 // parameters. Assume the following definition of the request message:
 //
 //
-//     service Messaging {
+//     gateway Messaging {
 //       rpc GetMessage(GetMessageRequest) returns (Message) {
 //         option (google.api.http).get = "/v1/messages/{message_id}";
 //       }
@@ -126,7 +126,7 @@ message Http {
 // message resource collection:
 //
 //
-//     service Messaging {
+//     gateway Messaging {
 //       rpc UpdateMessage(UpdateMessageRequest) returns (Message) {
 //         option (google.api.http) = {
 //           put: "/v1/messages/{message_id}"
@@ -153,7 +153,7 @@ message Http {
 // request body.  This enables the following alternative definition of
 // the update method:
 //
-//     service Messaging {
+//     gateway Messaging {
 //       rpc UpdateMessage(Message) returns (Message) {
 //         option (google.api.http) = {
 //           put: "/v1/messages/{message_id}"
@@ -182,7 +182,7 @@ message Http {
 // It is possible to define multiple HTTP methods for one RPC by using
 // the `additional_bindings` option. Example:
 //
-//     service Messaging {
+//     gateway Messaging {
 //       rpc GetMessage(GetMessageRequest) returns (Message) {
 //         option (google.api.http) = {
 //           get: "/v1/messages/{message_id}"

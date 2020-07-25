@@ -4,7 +4,7 @@ import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github/pibigstar/go-gateway/app/api/admin"
-	"github/pibigstar/go-gateway/app/api/service"
+	"github/pibigstar/go-gateway/app/api/gateway"
 	"github/pibigstar/go-gateway/middleware"
 )
 
@@ -22,9 +22,11 @@ func init() {
 		group.POST("/changePwd", admin.ChangePwd)
 	})
 
-	s.Group("/service", func(group *ghttp.RouterGroup) {
-		//group.Hook("/*", ghttp.HOOK_BEFORE_SERVE, middleware.Auth())
+	s.Group("/gateway", func(group *ghttp.RouterGroup) {
+		// 中间件，登陆校验
 		group.Middleware(middleware.Auth())
-		group.GET("/list", service.List)
+
+		group.GET("/list", gateway.List)
+		group.GET("/detail", gateway.Detail)
 	})
 }

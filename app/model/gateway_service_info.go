@@ -21,6 +21,16 @@ func (*ServiceInfoModel) TableName() string {
 	return "gateway_service_info"
 }
 
+func (m *ServiceInfoModel) Get(id uint64) (*ServiceInfoModel, error) {
+	one, err := db.Table(m.TableName()).Where("id = ?", id).FindOne()
+	if err != nil {
+		return nil, err
+	}
+	var info *ServiceInfoModel
+	err = one.Struct(&info)
+	return info, err
+}
+
 func (m *ServiceInfoModel) PageList(req *request.ServiceInfoListReq) ([]*ServiceInfoModel, int, error) {
 	db := db.Table(m.TableName())
 	if req.Content != "" {

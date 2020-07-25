@@ -12,3 +12,9 @@ type GatewayServiceGrpcRuleModel struct {
 func (*GatewayServiceGrpcRuleModel) TableName() string {
 	return "gateway_service_grpc_rule"
 }
+
+func (m *GatewayServiceGrpcRuleModel) GetByServiceId(serviceId uint64) (*GatewayServiceGrpcRuleModel, error) {
+	var result *GatewayServiceGrpcRuleModel
+	err := db.Table(m.TableName()).Where("service_id = ?", serviceId).Struct(&result)
+	return result, err
+}

@@ -65,7 +65,7 @@ func local_request_Echo_UnaryEcho_0(ctx context.Context, marshaler runtime.Marsh
 
 }
 
-// RegisterEchoHandlerServer registers the http handlers for service Echo to "mux".
+// RegisterEchoHandlerServer registers the http handlers for gateway Echo to "mux".
 // UnaryRPC     :call EchoServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 func RegisterEchoHandlerServer(ctx context.Context, mux *runtime.ServeMux, server EchoServer) error {
@@ -118,13 +118,13 @@ func RegisterEchoHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux,
 	return RegisterEchoHandler(ctx, mux, conn)
 }
 
-// RegisterEchoHandler registers the http handlers for service Echo to "mux".
+// RegisterEchoHandler registers the http handlers for gateway Echo to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
 func RegisterEchoHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
 	return RegisterEchoHandlerClient(ctx, mux, NewEchoClient(conn))
 }
 
-// RegisterEchoHandlerClient registers the http handlers for service Echo
+// RegisterEchoHandlerClient registers the http handlers for gateway Echo
 // to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "EchoClient".
 // Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "EchoClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in

@@ -17,3 +17,9 @@ type GatewayServiceHttpRuleModel struct {
 func (*GatewayServiceHttpRuleModel) TableName() string {
 	return "gateway_service_http_rule"
 }
+
+func (m *GatewayServiceHttpRuleModel) GetByServiceId(serviceId uint64) (*GatewayServiceHttpRuleModel, error) {
+	var result *GatewayServiceHttpRuleModel
+	err := db.Table(m.TableName()).Where("service_id = ?", serviceId).Struct(&result)
+	return result, err
+}

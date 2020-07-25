@@ -25,3 +25,9 @@
         Path   = "/tmp/log/go-gatewary/sql"
         Level  = "all"
         Stdout = true
+
+
+[cluster]
+    ip = "127.0.0.1"
+    port = 8088
+    ssl_port = 7000

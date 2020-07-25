@@ -163,7 +163,7 @@ option cc_enable_arenas = true;
 // Note that in the presence of schema evolution, this may mean that
 // fields the client does not know and has therefore not filled into
 // the request will be reset to their default. If this is unwanted
-// behavior, a specific service may require a client to always specify
+// behavior, a specific gateway may require a client to always specify
 // a field mask, producing an error if not.
 //
 // As with get operations, the location of the resource which
