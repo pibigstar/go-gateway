@@ -19,7 +19,7 @@ docker run -d -p 6831:6831/udp -p 16686:16686 jaegertracing/all-in-one:latest
 2. 生成swagger文档
 1. [安装gf-cli](http://127.0.0.1:8100/docs/swagger.json)
 2. 执行 gf swagger 或者 go generate
-
+3. 访问 http://127.0.0.1:8100/swagger 即可
 
 ## TODO
 - [ ] Mysql加入链路追踪机制
