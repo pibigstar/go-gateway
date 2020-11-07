@@ -29,15 +29,15 @@ func (a *AdminModel) AdminLogin(req *request.AdminLoginReq) (*AdminModel, error)
 		Where("user_name = ?", req.UserName).
 		Where("is_delete = 0").One()
 	if err != nil {
-		if gdb.ErrNoRows == err {
-			return nil, errx.New(code.Error_User_Not_Exist)
-		}
 		return nil, err
 	}
 
 	var adminModel *AdminModel
 	err = record.Struct(&adminModel)
 	if err != nil {
+		if gdb.ErrNoRows == err {
+			return nil, errx.New(code.Error_User_Not_Exist)
+		}
 		return nil, err
 	}
 

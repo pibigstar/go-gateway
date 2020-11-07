@@ -11,11 +11,11 @@
 [logger]
     Path        = "/tmp/log/go-gatewary"
     Level       = "all"
-    Stdout      = true
+    Stdout      = false
 
 # Database.
 [database]
-    link  = "mysql:root:123456@tcp(127.0.0.1:3306)/go_gateway"
+    link  = "mysql:pibigstar:pibigstar@tcp(106.54.212.69:3306)/go_gateway"
     debug = true
     MaxIdle = 10
     MaxOpen = 50

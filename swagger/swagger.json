@@ -100,7 +100,7 @@
                 "tags": [
                     "管理员接口"
                 ],
-                "summary": "登陆接口",
+                "summary": "管理员登陆",
                 "operationId": "/admin/login",
                 "parameters": [
                     {
@@ -181,7 +181,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "服务详情接口"
+                    "网关服务接口"
                 ],
                 "summary": "服务详情接口",
                 "operationId": "/gateway/detail",
@@ -225,7 +225,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "服务列表接口"
+                    "网关服务接口"
                 ],
                 "summary": "服务列表接口",
                 "operationId": "/gateway/list",
@@ -246,6 +246,50 @@
                         "type": "integer",
                         "description": "每页多少个",
                         "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.Response"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/gateway/stat": {
+            "get": {
+                "description": "服务统计接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "网关服务接口"
+                ],
+                "summary": "服务统计接口",
+                "operationId": "/gateway/stat",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "服务ID",
+                        "name": "id",
                         "in": "query"
                     }
                 ],

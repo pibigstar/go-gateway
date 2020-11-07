@@ -11,7 +11,7 @@ import (
 )
 
 // Login godoc
-// @Summary 登陆接口
+// @Summary 管理员登陆
 // @Description 管理员登陆接口
 // @Tags 管理员接口
 // @ID /admin/login

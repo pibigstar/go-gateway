@@ -17,6 +17,12 @@ type ServiceInfoModel struct {
 	IsDelete    int        `json:"is_delete"`    // 是否删除 1=删除
 }
 
+type ServiceDetail struct {
+	GRPCRule *GatewayServiceGrpcRuleModel
+	HTTPRule *GatewayServiceHttpRuleModel
+	TCPRule  *GatewayServiceTcpRuleModel
+}
+
 func (*ServiceInfoModel) TableName() string {
 	return "gateway_service_info"
 }
@@ -57,5 +63,21 @@ func (m *ServiceInfoModel) PageList(req *request.ServiceInfoListReq) ([]*Service
 	}
 
 	return results, total, err
+}
 
+func (m *ServiceInfoModel) ServiceDetail(serviceId uint64) *ServiceDetail {
+	detail := &ServiceDetail{}
+	tcpRule, err := MGatewayServiceTcpRuleModel.GetByServiceId(serviceId)
+	if err == nil {
+		detail.TCPRule = tcpRule
+	}
+	httpRule, err := MGatewayServiceHttpRuleModel.GetByServiceId(serviceId)
+	if err == nil {
+		detail.HTTPRule = httpRule
+	}
+	grpcRule, err := MGatewayServiceGrpcRuleModel.GetByServiceId(serviceId)
+	if err == nil {
+		detail.GRPCRule = grpcRule
+	}
+	return detail
 }

@@ -1,3 +1,5 @@
+//go:generate gf swagger
+
 package main
 
 import (

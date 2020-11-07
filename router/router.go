@@ -28,5 +28,6 @@ func init() {
 
 		group.GET("/list", gateway.List)
 		group.GET("/detail", gateway.Detail)
+		group.GET("/stat", gateway.Stat)
 	})
 }

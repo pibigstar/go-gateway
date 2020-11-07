@@ -21,3 +21,9 @@ type GatewayServiceLoadBalanceModel struct {
 func (*GatewayServiceLoadBalanceModel) TableName() string {
 	return "gateway_service_load_balance"
 }
+
+func (m *GatewayServiceLoadBalanceModel) GetByServiceId(serviceId uint64) (*GatewayServiceLoadBalanceModel, error) {
+	var result *GatewayServiceLoadBalanceModel
+	err := db.Table(m.TableName()).Where("service_id = ?", serviceId).Struct(&result)
+	return result, err
+}
